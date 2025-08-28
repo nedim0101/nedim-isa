@@ -1,0 +1,65 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Knjige</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+    <nav>
+        <a href="/">Početna</a>
+        <a href="/books">Knjige</a>
+        <a href="/members">Članovi</a>
+        <a href="/loans">Pozajmice</a>
+        <a href="/authors">Autori</a>
+        <a href="/logout">Odjava</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>📚 Knjige</h1>
+                <a href="/books/new" class="btn">➕ Dodaj novu knjigu</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Naslov</th>
+                        <th>ISBN</th>
+                        <th>Autori</th>
+                        <th>Žanr</th>
+                        <th>Godina</th>
+                        <th>Dostupno/Ukupno</th>
+                        <th>Akcije</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="book : ${books}">
+                        <td th:text="${book.id}">ID</td>
+                        <td th:text="${book.title}">Naslov</td>
+                        <td th:text="${book.isbn}">ISBN</td>
+                        <td>
+                            <span th:each="author, iter : ${book.authors}">
+                                <span th:text="${author.firstName} + ' ' + ${author.lastName}">Autor</span>
+                                <span th:unless="${iter.last}">, </span>
+                            </span>
+                        </td>
+                        <td th:text="${book.genre}">Žanr</td>
+                        <td th:text="${book.publicationYear}">Godina</td>
+                        <td>
+                            <span th:text="${book.availableCopies}">0</span>/<span th:text="${book.totalCopies}">0</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/books/view/{id}(id=${book.id})}" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">👁️</a>
+                            <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">✏️</a>
+                            <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger" 
+                               style="padding: 0.25rem 0.5rem; font-size: 0.875rem;"
+                               onclick="return confirm('Da li ste sigurni?')">🗑️</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

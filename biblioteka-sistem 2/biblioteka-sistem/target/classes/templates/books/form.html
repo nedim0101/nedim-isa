@@ -1,0 +1,84 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova/Izmeni knjigu</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+    <nav>
+        <a href="/">Početna</a>
+        <a href="/books">Knjige</a>
+        <a href="/members">Članovi</a>
+        <a href="/loans">Pozajmice</a>
+        <a href="/authors">Autori</a>
+        <a href="/logout">Odjava</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h1 th:text="${book.id == null ? 'Nova knjiga' : 'Izmeni knjigu'}">Nova knjiga</h1>
+            <div th:if="${param.error == 'isbn'}" class="alert alert-danger">
+                Knjiga sa ovim ISBN brojem već postoji!
+            </div>
+            <form th:action="@{/books/save}" th:object="${book}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label for="title">Naslov:</label>
+                    <input type="text" id="title" th:field="*{title}" required placeholder="Unesite naslov knjige">
+                </div>
+                <div class="form-group">
+                    <label for="isbn">ISBN:</label>
+                    <input type="text" id="isbn" th:field="*{isbn}" required 
+                           pattern="[\d-]+" title="ISBN može sadržati samo brojeve i crtice" placeholder="npr. 978-86-123-4567-8">
+                </div>
+                <div class="form-group">
+                    <label for="publisher">Izdavač:</label>
+                    <input type="text" id="publisher" th:field="*{publisher}" placeholder="Unesite izdavača">
+                </div>
+                <div class="form-group">
+                    <label for="publicationYear">Godina izdanja:</label>
+                    <input type="number" id="publicationYear" th:field="*{publicationYear}" 
+                           min="1000" max="2025" placeholder="npr. 2020">
+                </div>
+                <div class="form-group">
+                    <label for="genre">Žanr:</label>
+                    <select id="genre" th:field="*{genre}">
+                        <option value="">-- Izaberite žanr --</option>
+                        <option value="Roman">Roman</option>
+                        <option value="Poezija">Poezija</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Naučna fantastika">Naučna fantastika</option>
+                        <option value="Biografija">Biografija</option>
+                        <option value="Istorija">Istorija</option>
+                        <option value="Stručna literatura">Stručna literatura</option>
+                        <option value="Dečja književnost">Dečja književnost</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Opis:</label>
+                    <textarea id="description" th:field="*{description}" rows="4" placeholder="Unesite opis knjige"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="totalCopies">Ukupan broj primeraka:</label>
+                    <input type="number" id="totalCopies" th:field="*{totalCopies}" min="1" required placeholder="npr. 5">
+                </div>
+                <div class="form-group">
+                    <label for="authorIds">Autori:</label>
+                    <select id="authorIds" name="authorIds" multiple size="5">
+                        <option th:each="author : ${authors}" 
+                                th:value="${author.id}"
+                                th:text="${author.firstName + ' ' + author.lastName}"
+                                th:selected="${book.authors != null and book.authors.contains(author)}">
+                        </option>
+                    </select>
+                    <small style="display: block; margin-top: 0.25rem;">Držite Ctrl za izbor više autora</small>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn">💾 Sačuvaj</button>
+                    <a href="/books" class="btn btn-danger" style="margin-left: 0.5rem;">❌ Otkaži</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

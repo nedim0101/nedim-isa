@@ -1,0 +1,15 @@
+<!-- navigation.html -->
+<nav class="navbar" th:fragment="navigation">
+    <div>
+        <a href="/dashboard">📚 Biblioteka Sistem</a>
+        <a href="/books">Knjige</a>
+        <a href="/members">Članovi</a>
+        <a href="/authors">Autori</a>
+        <a href="/loans">Pozajmice</a>
+        <a href="/h2-console" target="_blank" sec:authorize="hasRole('ADMIN')">Baza</a>
+    </div>
+    <div>
+        <span>Dobrodošli, <span sec:authentication="principal.fullName"></span></span>
+        <a href="/logout" class="btn btn-danger" style="margin-left: 1rem;">Odjavi se</a>
+    </div>
+</nav>

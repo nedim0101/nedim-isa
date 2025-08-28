@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalji knjige</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+    <nav>
+        <a href="/">Početna</a>
+        <a href="/books">Knjige</a>
+        <a href="/members">Članovi</a>
+        <a href="/loans">Pozajmice</a>
+        <a href="/authors">Autori</a>
+        <a href="/logout">Odjava</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h1>📖 Detalji knjige</h1>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; margin-top: 2rem;">
+                <strong>Naslov:</strong>
+                <span th:text="${book.title}"></span>
+                <strong>ISBN:</strong>
+                <span th:text="${book.isbn}"></span>
+                <strong>Izdavač:</strong>
+                <span th:text="${book.publisher}"></span>
+                <strong>Godina izdanja:</strong>
+                <span th:text="${book.publicationYear}"></span>
+                <strong>Žanr:</strong>
+                <span th:text="${book.genre}"></span>
+                <strong>Autori:</strong>
+                <div>
+                    <span th:each="author, iter : ${book.authors}">
+                        <span th:text="${author.firstName + ' ' + author.lastName}"></span>
+                        <span th:unless="${iter.last}">, </span>
+                    </span>
+                </div>
+                <strong>Opis:</strong>
+                <span th:text="${book.description}"></span>
+                <strong>Ukupan broj primeraka:</strong>
+                <span th:text="${book.totalCopies}"></span>
+                <strong>Dostupnih primeraka:</strong>
+                <span th:text="${book.availableCopies}" 
+                      th:style="${book.availableCopies > 0 ? 'color: green;' : 'color: red;'}"></span>
+            </div>
+            <div style="margin-top: 2rem;">
+                <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn">✏️ Izmeni</a>
+                <a href="/books" class="btn" style="margin-left: 0.5rem;">🔙 Nazad na listu</a>
+            </div>
+        </div>
+        <div class="card" th:if="${!book.loans.isEmpty()}">
+            <h2>📚 Istorija pozajmica</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Član</th>
+                        <th>Datum pozajmice</th>
+                        <th>Rok vraćanja</th>
+                        <th>Datum vraćanja</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="loan : ${book.loans}">
+                        <td th:text="${loan.member.firstName + ' ' + loan.member.lastName}"></td>
+                        <td th:text="${loan.loanDate}"></td>
+                        <td th:text="${loan.dueDate}"></td>
+                        <td th:text="${loan.returnDate}"></td>
+                        <td th:text="${loan.status}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

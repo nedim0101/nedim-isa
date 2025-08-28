@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteka Sistem - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+    <nav>
+        <a href="/">Početna</a>
+        <a href="/books">Knjige</a>
+        <a href="/members">Članovi</a>
+        <a href="/loans">Pozajmice</a>
+        <a href="/authors">Autori</a>
+        <a href="/logout">Odjava</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h1>Dobrodošli u Biblioteka Sistem</h1>
+            <p>Prijavljen kao: 
+                <strong sec:authentication="name">Korisnik</strong>
+            </p>
+            <p>Uloga: 
+                <strong sec:authentication="principal.authorities">ULOGA</strong>
+            </p>
+        </div>
+        <div class="card">
+            <h2>Brze akcije</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <a href="/books/new" class="btn">➕ Nova knjiga</a>
+                <a href="/members/new" class="btn">➕ Novi član</a>
+                <a href="/loans/new" class="btn btn-success">📖 Nova pozajmica</a>
+                <a href="/authors/new" class="btn">✍️ Novi autor</a>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Statistika</h2>
+            <p>Sistem trenutno upravlja bibliotečkim resursima.</p>
+            <ul>
+                <li>Pregledajte knjige u sekciji "Knjige"</li>
+                <li>Upravljajte članovima u sekciji "Članovi"</li>
+                <li>Pratite pozajmice u sekciji "Pozajmice"</li>
+                <li>Dodajte autore u sekciji "Autori"</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
